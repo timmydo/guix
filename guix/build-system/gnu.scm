@@ -276,7 +276,7 @@ standard packages used as implicit inputs of the GNU build system."
 (define* (lower name
                 #:key source inputs native-inputs outputs target
                 (implicit-inputs? #t) (implicit-cross-inputs? #t)
-                (strip-binaries? #f) system
+                (strip-binaries? #t) system
                 #:allow-other-keys
                 #:rest arguments)
   "Return a bag for NAME from the given arguments."
@@ -336,7 +336,7 @@ standard packages used as implicit inputs of the GNU build system."
                     (parallel-build? #t)
                     (parallel-tests? #t)
                     (patch-shebangs? #t)
-                    (strip-binaries? #f)
+                    (strip-binaries? #t)
                     (strip-flags ''("--enable-deterministic-archives"))
                     (strip-directories ''("lib" "lib64" "libexec"
                                           "bin" "sbin"))
@@ -490,7 +490,7 @@ is one of `host' or `target'."
                           (test-target "check")
                           (parallel-build? #t) (parallel-tests? #t)
                           (patch-shebangs? #t)
-                          (strip-binaries? #f)
+                          (strip-binaries? #t)
                           (strip-flags ''("--enable-deterministic-archives"))
                           (strip-directories ''("lib" "lib64" "libexec"
                                                 "bin" "sbin"))

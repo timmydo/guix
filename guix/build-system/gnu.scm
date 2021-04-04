@@ -208,14 +208,14 @@ flags for VARIABLE, the associated value is augmented."
   "A version of P linked with `-static-gcc'."
   (package-with-extra-configure-variable p "LDFLAGS" "-static-libgcc"))
 
-(define* (static-package p #:key (strip-all? #f))
+(define* (static-package p #:key (strip-all? #t))
   "Return a statically-linked version of package P.  If STRIP-ALL? is true,
 use `--strip-all' as the arguments to `strip'."
   (package (inherit p)
     (arguments
      (let ((a (default-keyword-arguments (package-arguments p)
                 '(#:configure-flags '()
-                  #:strip-flags '()))))
+                  #:strip-flags '("--strip-debug")))))
        (substitute-keyword-arguments a
          ((#:configure-flags flags)
           `(cons* "--disable-shared" "LDFLAGS=-static" ,flags))
@@ -337,7 +337,8 @@ standard packages used as implicit inputs of the GNU build system."
                     (parallel-tests? #t)
                     (patch-shebangs? #t)
                     (strip-binaries? #t)
-                    (strip-flags ''("--enable-deterministic-archives"))
+                    (strip-flags ''("--strip-debug"
+                                    "--enable-deterministic-archives"))
                     (strip-directories ''("lib" "lib64" "libexec"
                                           "bin" "sbin"))
                     (validate-runpath? #t)
@@ -491,7 +492,8 @@ is one of `host' or `target'."
                           (parallel-build? #t) (parallel-tests? #t)
                           (patch-shebangs? #t)
                           (strip-binaries? #t)
-                          (strip-flags ''("--enable-deterministic-archives"))
+                          (strip-flags ''("--strip-debug"
+                                          "--enable-deterministic-archives"))
                           (strip-directories ''("lib" "lib64" "libexec"
                                                 "bin" "sbin"))
                           (validate-runpath? #t)
